@@ -7,20 +7,49 @@
 //
 
 import UIKit
+import SQLite3
 
 class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
-    let games = ["Uncharted 4: A Thief's End", "Spider Man", "Forza Horizon", "Kinect Adventures", "Mirror's Edge", "Heavy Rain", "The Last Of Us"]
+    var db: OpaquePointer?
     
+    let createGameTable = """
+    CREATE TABLE IF NOT EXISTS `Game` (
+    `idg` int NOT NULL PRIMARY KEY,
+    `title` varchar(100) NOT NULL,
+    `year` int NOT NULL,
+    `state` tinyint(5) NOT NULL,
+    `c_url` text,
+    `c_id` int NOT NULL);
+    """
+    
+    let games = ["Uncharted 4: A Thief's End", "Spider Man", "Forza Horizon", "Kinect Adventures", "Mirror's Edge", "Heavy Rain", "The Last Of Us"]
     let consoles = ["PS4", "PS4", "Xbox 360", "Xbox 360", "PC", "PS3", "PS3"]
     
     let textCellIdentifier = "gameCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Create database file
+        let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent("GamesDatabase.sqlite")
+        
+        if sqlite3_open(fileURL.path, &db) == SQLITE_OK {
+            print("Database opened successfully")
+        } else {
+            print("Unable to open database")
+        }
+        
+        if sqlite3_exec(db, createGameTable, nil, nil, nil) == SQLITE_OK {
+            print("Table created successfully")
+        } else {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error creating table: \(errmsg)")
+        }
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -40,6 +69,17 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 break
         }
     }*/
+    
+    // Funkcje do SQLite3
+    @IBAction func navAdd(_ sender: Any) {
+        self.performSegue(withIdentifier: "Indentifier", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let nav = segue.destination as! UINavigationController
+        let vc = nav.topViewController as! NewEntryViewController
+        vc.db = db
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
