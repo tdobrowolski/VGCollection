@@ -23,7 +23,7 @@
         <scene sceneID="Gca-xp-e9B">
             <objects>
                 <tableViewController id="TgE-Jk-bvz" customClass="NewEntryViewController" customModule="VGCollection" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Fxo-hX-CWf">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Fxo-hX-CWf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -134,16 +134,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kZp-q9-wAG">
+                                                    <rect key="frame" x="306" y="11" width="53" height="22"/>
+                                                    <state key="normal" title="Choose"/>
+                                                    <connections>
+                                                        <action selector="chooseYear:" destination="TgE-Jk-bvz" eventType="touchUpInside" id="Bcj-fZ-O9A"/>
+                                                    </connections>
+                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Console" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="blb-mj-Ot4">
                                                     <rect key="frame" x="16" y="11" width="63" height="22"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.53725490200000003" green="0.53725490200000003" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kZp-q9-wAG">
-                                                    <rect key="frame" x="306" y="11" width="53" height="22"/>
-                                                    <state key="normal" title="Choose"/>
-                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="blb-mj-Ot4" firstAttribute="bottom" secondItem="gif-Jc-8h7" secondAttribute="bottomMargin" id="ITg-eI-dNB"/>
@@ -337,7 +340,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TLoU-PS3" translatesAutoresizingMaskIntoConstraints="NO" id="Tc5-bu-hyx">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Tc5-bu-hyx">
                                 <rect key="frame" x="105.5" y="84" width="164" height="218"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="164" id="4W1-Ea-p6c"/>
@@ -358,7 +361,7 @@
                                     <action selector="deleteAction:" destination="EnH-Su-ffg" eventType="touchUpInside" id="q5H-v1-HQe"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="The Last Of Us" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COZ-XJ-1e9">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Title" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COZ-XJ-1e9">
                                 <rect key="frame" x="16" y="310" width="343" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -367,7 +370,7 @@
                                 <fontDescription key="fontDescription" name="ProductSans-Bold" family="Product Sans" pointSize="28"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PS3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEJ-GV-eeu">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Console" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sEJ-GV-eeu">
                                 <rect key="frame" x="16" y="368" width="343" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="22Q-Zd-FBL"/>
@@ -376,13 +379,13 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Naughty Dog" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYN-GB-VZY">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Studio" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYN-GB-VZY">
                                 <rect key="frame" x="16" y="405" width="343" height="21"/>
                                 <fontDescription key="fontDescription" name="ProductSans-Regular" family="Product Sans" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Action, Adventure" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKI-Ju-TkP">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKI-Ju-TkP">
                                 <rect key="frame" x="16" y="442" width="343" height="21"/>
                                 <fontDescription key="fontDescription" name="ProductSans-Regular" family="Product Sans" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -462,7 +465,4 @@
             <point key="canvasLocation" x="2038" y="418"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="TLoU-PS3" width="800" height="920"/>
-    </resources>
 </document>

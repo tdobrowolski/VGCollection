@@ -8,7 +8,7 @@
 import UIKit
 import SQLite3
 
-class NewEntryViewController: UITableViewController {
+class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     
     // TextField Outlets
     @IBOutlet weak var gameTitle: UITextField!
@@ -16,9 +16,14 @@ class NewEntryViewController: UITableViewController {
     @IBOutlet weak var coverURL: UITextField!
     
     var db: OpaquePointer?
+    var pickerData = [Int]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        for i in 1980...2018 {
+            pickerData.append(i)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,16 +59,53 @@ class NewEntryViewController: UITableViewController {
         sqlite3_finalize(insertStatement)
     }
     
+    @IBAction func chooseYear(_ sender: Any) {
+        createPicker()
+    }
+    
+    func createPicker() {
+        let picker = UIPickerView()
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(picker)
+        
+        picker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        picker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        picker.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+    }
+    
+    //UITableView
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        /*if indexPath.row == 1 {
+            print("Console")
+        }*/
+        
+        print(indexPath.row)
+    }
+    
+    // UIPickerView
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return pickerData.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return String(pickerData[row])
+    }
+    
     @IBAction func Done(_ sender: Any) {
         let alert = UIAlertController(title: nil, message: "Add to:", preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
-            self.insert(state: 1)
+            self.insert(state: 0)
             self.dismiss(animated: true, completion: nil)
         }))
         
         alert.addAction(UIAlertAction(title: "Wish list", style: .default , handler:{ (UIAlertAction)in
-            self.insert(state: 0)
+            self.insert(state: 1)
             self.dismiss(animated: true, completion: nil)
         }))
         
@@ -77,6 +119,4 @@ class NewEntryViewController: UITableViewController {
     @IBAction func Cancel(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
-    
 }

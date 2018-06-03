@@ -26,8 +26,25 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         readGameValues()
     
+        // Pobieranie okladki gry
+        let url = URL(string: (curGame?.c_url)!)
+        //let data = try? Data(contentsOf: url!)
+        //print(url)
+        //coverImage.image = UIImage(data: data!)
+        
+        let task = URLSession.shared.dataTask(with: url!) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            DispatchQueue.main.async() {    // execute on main thread
+                self.coverImage.image = UIImage(data: data)
+            }
+        }
+        
+        task.resume()
+        
         titleTextView.text = curGame?.title
         consoleLabel.text = String(describing: curGame?.c_id)
+        
         
         deleteButton.layer.cornerRadius = 5
     }
@@ -69,6 +86,7 @@ class GameViewController: UIViewController {
     @IBAction func deleteAction(_ sender: Any) {
         
         var statement: OpaquePointer? = nil
+        
         
         let deleteString = "DELETE FROM Game WHERE idg = \(String(describing: passedValue!))"
         
