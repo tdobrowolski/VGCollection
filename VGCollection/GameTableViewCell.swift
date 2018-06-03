@@ -10,9 +10,10 @@ import UIKit
 
 class GameTableViewCell: UITableViewCell {
 
+    var idg: Int?
     @IBOutlet weak var gameTitle: UILabel!
     @IBOutlet weak var console: UILabel!
-        
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }

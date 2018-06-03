@@ -19,7 +19,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--New Entry View Controller-->
+        <!--Add-->
         <scene sceneID="Gca-xp-e9B">
             <objects>
                 <tableViewController id="TgE-Jk-bvz" customClass="NewEntryViewController" customModule="VGCollection" customModuleProvider="target" sceneMemberID="viewController">
@@ -219,7 +219,7 @@
                             <outlet property="delegate" destination="TgE-Jk-bvz" id="hoI-dY-fc2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="T5c-OO-15B">
+                    <navigationItem key="navigationItem" title="Add" id="T5c-OO-15B">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hVH-oq-yBn">
                             <connections>
                                 <action selector="Cancel:" destination="TgE-Jk-bvz" id="8UB-XW-FWD"/>
@@ -239,7 +239,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X5P-aD-72C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3916" y="429.53523238380814"/>
+            <point key="canvasLocation" x="2980" y="418"/>
         </scene>
         <!--Games-->
         <scene sceneID="tne-QT-ifu">
@@ -286,7 +286,6 @@
                                         <connections>
                                             <outlet property="console" destination="DcQ-4r-upb" id="drD-DO-oXb"/>
                                             <outlet property="gameTitle" destination="VwU-j7-N3L" id="fFR-PN-pn2"/>
-                                            <segue destination="EnH-Su-ffg" kind="show" id="msJ-QL-18C"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -323,6 +322,7 @@
                     <connections>
                         <outlet property="segmentedControl" destination="CYb-ZD-OOr" id="gtp-ba-x7P"/>
                         <outlet property="tableView" destination="K4U-KU-qI1" id="gVZ-bW-fEk"/>
+                        <segue destination="EnH-Su-ffg" kind="show" identifier="detail" id="Pvb-Hq-756"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -354,6 +354,9 @@
                                 <state key="normal" title="Delete">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="deleteAction:" destination="EnH-Su-ffg" eventType="touchUpInside" id="q5H-v1-HQe"/>
+                                </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="The Last Of Us" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COZ-XJ-1e9">
                                 <rect key="frame" x="16" y="310" width="343" height="50"/>
@@ -412,7 +415,7 @@
                     <connections>
                         <outlet property="consoleLabel" destination="sEJ-GV-eeu" id="LGG-sb-J8P"/>
                         <outlet property="coverImage" destination="Tc5-bu-hyx" id="RGL-QP-IAr"/>
-                        <outlet property="deleteButton" destination="jQo-gF-CRK" id="pNw-os-KdM"/>
+                        <outlet property="deleteButton" destination="jQo-gF-CRK" id="4FM-Sx-r04"/>
                         <outlet property="genresLabel" destination="TKI-Ju-TkP" id="NHC-j4-1cX"/>
                         <outlet property="studioLabel" destination="DYN-GB-VZY" id="MZo-HX-oae"/>
                         <outlet property="titleTextView" destination="COZ-XJ-1e9" id="8ZR-S6-tQb"/>
@@ -420,7 +423,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dRi-69-QIq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="1124"/>
+            <point key="canvasLocation" x="2038" y="1188"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ENW-VE-nN8">
@@ -456,7 +459,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ud5-MK-LJU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2976.8000000000002" y="429.53523238380814"/>
+            <point key="canvasLocation" x="2038" y="418"/>
         </scene>
     </scenes>
     <resources>

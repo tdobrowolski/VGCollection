@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B84C308620AC421600A6B199 /* NewEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84C308520AC421600A6B199 /* NewEntryViewController.swift */; };
+		B855C15720C400FB00325C64 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B855C15620C400FB00325C64 /* Game.swift */; };
 		B8BA99BE20A782490044D7B7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BA99BD20A782490044D7B7 /* AppDelegate.swift */; };
 		B8BA99C020A782490044D7B7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8BA99BF20A782490044D7B7 /* ViewController.swift */; };
 		B8BA99C320A782490044D7B7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8BA99C120A782490044D7B7 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		B81BCC5720AB0FE40078DE5D /* productsansreg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = productsansreg.ttf; path = /Users/tobiaszdobrowo/Documents/GitHub/VGCollection/VGCollection/productsansreg.ttf; sourceTree = "<absolute>"; };
 		B81BCC5820AB0FE40078DE5D /* productsans.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = productsans.ttf; path = /Users/tobiaszdobrowo/Documents/GitHub/VGCollection/VGCollection/productsans.ttf; sourceTree = "<absolute>"; };
 		B84C308520AC421600A6B199 /* NewEntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewEntryViewController.swift; sourceTree = "<group>"; };
+		B855C15620C400FB00325C64 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		B8BA99BA20A782490044D7B7 /* VGCollection.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VGCollection.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8BA99BD20A782490044D7B7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8BA99BF20A782490044D7B7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 				B84C308520AC421600A6B199 /* NewEntryViewController.swift */,
 				B8BA99D420A79D890044D7B7 /* GameViewController.swift */,
 				B8BA99D220A78DB90044D7B7 /* GameTableViewCell.swift */,
+				B855C15620C400FB00325C64 /* Game.swift */,
 				B8BA99C120A782490044D7B7 /* Main.storyboard */,
 				B8BA99C720A7824A0044D7B7 /* Assets.xcassets */,
 				B8BA99C920A7824A0044D7B7 /* LaunchScreen.storyboard */,
@@ -153,6 +156,7 @@
 			files = (
 				B8BA99D520A79D890044D7B7 /* GameViewController.swift in Sources */,
 				B8BA99C020A782490044D7B7 /* ViewController.swift in Sources */,
+				B855C15720C400FB00325C64 /* Game.swift in Sources */,
 				B8BA99BE20A782490044D7B7 /* AppDelegate.swift in Sources */,
 				B8BA99C620A782490044D7B7 /* VGCollection.xcdatamodeld in Sources */,
 				B84C308620AC421600A6B199 /* NewEntryViewController.swift in Sources */,

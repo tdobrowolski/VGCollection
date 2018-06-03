@@ -28,17 +28,18 @@ class NewEntryViewController: UITableViewController {
     func insert(state: Int) {
         var insertStatement: OpaquePointer?
         
-        let insertString = "INSERT INTO Game (idg, title, year, state, c_url, c_id) VALUES (?,?,?,?,?,?);"
+        let insertString = "INSERT INTO Game (title, year, state, c_url, c_id) VALUES (?,?,?,?,?);"
         
         //preparing the query
         if sqlite3_prepare_v2(db, insertString, -1, &insertStatement, nil) == SQLITE_OK {
             
-            sqlite3_bind_int(insertStatement, 1, 0)
-            sqlite3_bind_text(insertStatement, 2, gameTitle.text, -1, nil)
-            sqlite3_bind_int(insertStatement, 3, 2018)
-            sqlite3_bind_int(insertStatement, 4, Int32(state))
-            sqlite3_bind_text(insertStatement, 5, coverURL.text, -1, nil)
-            sqlite3_bind_int(insertStatement, 6, 1)
+            sqlite3_bind_text(insertStatement, 1, (gameTitle.text! as NSString).utf8String, -1, nil)
+            print(gameTitle.text!)
+            sqlite3_bind_int(insertStatement, 2, Int32(2018))
+            sqlite3_bind_int(insertStatement, 3, Int32(state))
+            sqlite3_bind_text(insertStatement, 4, (coverURL.text! as NSString).utf8String, -1, nil)
+            print(coverURL.text!)
+            sqlite3_bind_int(insertStatement, 5, 1)
             
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 print("Successfully inserted row.")
@@ -58,10 +59,12 @@ class NewEntryViewController: UITableViewController {
         
         alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
             self.insert(state: 1)
+            self.dismiss(animated: true, completion: nil)
         }))
         
         alert.addAction(UIAlertAction(title: "Wish list", style: .default , handler:{ (UIAlertAction)in
             self.insert(state: 0)
+            self.dismiss(animated: true, completion: nil)
         }))
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in }))
