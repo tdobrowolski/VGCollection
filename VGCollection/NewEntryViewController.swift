@@ -14,16 +14,27 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var gameTitle: UITextField!
     @IBOutlet weak var studio: UITextField!
     @IBOutlet weak var coverURL: UITextField!
+    @IBOutlet weak var pickerView: UIPickerView!
+    
+    @IBOutlet weak var chooseConsoleButton: UIButton!
+    @IBOutlet weak var chooseGenresButton: UIButton!
+    @IBOutlet weak var chooseYearButton: UIButton!
+    
+    @IBOutlet weak var consoleLabel: UILabel!
+    @IBOutlet weak var genresLabel: UILabel!
+    @IBOutlet weak var yearLabel: UILabel!
     
     var db: OpaquePointer?
     var pickerData = [Int]()
+    var newGame: Game?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        for i in 1980...2018 {
-            pickerData.append(i)
-        }
+        self.pickerView.delegate = self
+        self.pickerView.dataSource = self
+        
+        self.pickerView.isHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,29 +70,58 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         sqlite3_finalize(insertStatement)
     }
     
+    @IBAction func chooseConsole(_ sender: Any) {
+        if chooseGenresButton.isEnabled == true {
+            self.pickerView.isHidden = false
+            
+            pickerData.removeAll()
+            for i in 1980...2018 { // zmien na dostep do konsoli
+                pickerData.append(i)
+            }
+            
+            self.pickerView.delegate = self
+            chooseGenresButton.isEnabled = false
+            chooseYearButton.isEnabled = false
+        } else {
+            print("Year has been chosen. Everything is back to normal.")
+            newGame?.c_id = pickerData[pickerView.selectedRow(inComponent: 0)]
+            print(newGame?.c_id) // nie dziala :(
+            consoleLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
+            chooseGenresButton.isEnabled = true
+            chooseYearButton.isEnabled = true
+            self.pickerView.isHidden = true
+        }
+    }
+    
+    @IBAction func chooseGenres(_ sender: Any) {
+    }
+    
     @IBAction func chooseYear(_ sender: Any) {
-        createPicker()
-    }
-    
-    func createPicker() {
-        let picker = UIPickerView()
-        picker.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(picker)
         
-        picker.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        picker.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        picker.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        if chooseGenresButton.isEnabled == true {
+            print("hello")
+            self.pickerView.isHidden = false
+            
+            pickerData.removeAll()
+            for i in 1980...2018 {
+                pickerData.append(i)
+            }
+            
+            self.pickerView.delegate = self
+            chooseConsoleButton.isEnabled = false
+            chooseGenresButton.isEnabled = false
+        } else {
+            print("Year has been chosen. Everything is back to normal.")
+            newGame?.year = pickerData[pickerView.selectedRow(inComponent: 0)]
+            print(newGame?.year) // nie dziala :(
+            yearLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
+            chooseConsoleButton.isEnabled = true
+            chooseGenresButton.isEnabled = true
+            self.pickerView.isHidden = true
+        }
     }
     
-    //UITableView
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*if indexPath.row == 1 {
-            print("Console")
-        }*/
-        
-        print(indexPath.row)
-    }
     
     // UIPickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
