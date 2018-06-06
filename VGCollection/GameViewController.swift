@@ -28,9 +28,6 @@ class GameViewController: UIViewController {
     
         // Pobieranie okladki gry
         let url = URL(string: (curGame?.c_url)!)
-        //let data = try? Data(contentsOf: url!)
-        //print(url)
-        //coverImage.image = UIImage(data: data!)
         
         let task = URLSession.shared.dataTask(with: url!) { data, response, error in
             guard let data = data, error == nil else { return }

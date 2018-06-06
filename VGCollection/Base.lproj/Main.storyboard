@@ -182,10 +182,20 @@
                                                     <color key="textColor" red="0.53725490200000003" green="0.53725490200000003" blue="0.53725490200000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TG2-gx-A0d">
+                                                    <rect key="frame" x="242" y="11" width="39" height="22"/>
+                                                    <state key="normal" title="Close"/>
+                                                    <connections>
+                                                        <action selector="closeGenresPicker:" destination="TgE-Jk-bvz" eventType="touchUpInside" id="Wd0-aQ-Guf"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Mou-R9-vC9" secondAttribute="bottom" id="JAy-ef-1Z8"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="TG2-gx-A0d" secondAttribute="bottom" id="Jjf-nA-9B8"/>
+                                                <constraint firstItem="TG2-gx-A0d" firstAttribute="top" secondItem="RGi-fV-mmM" secondAttribute="topMargin" id="QUN-la-rCc"/>
                                                 <constraint firstItem="Mou-R9-vC9" firstAttribute="top" secondItem="RGi-fV-mmM" secondAttribute="topMargin" id="Xck-wq-6IZ"/>
+                                                <constraint firstItem="Mou-R9-vC9" firstAttribute="leading" secondItem="TG2-gx-A0d" secondAttribute="trailing" constant="25" id="bgk-oe-Wil"/>
                                                 <constraint firstItem="hqA-gP-aRZ" firstAttribute="bottom" secondItem="RGi-fV-mmM" secondAttribute="bottomMargin" id="jmY-9i-qKN"/>
                                                 <constraint firstItem="hqA-gP-aRZ" firstAttribute="top" secondItem="RGi-fV-mmM" secondAttribute="topMargin" id="kXw-Ax-Q2N"/>
                                                 <constraint firstItem="hqA-gP-aRZ" firstAttribute="leading" secondItem="RGi-fV-mmM" secondAttribute="leadingMargin" id="kgY-0t-E7l"/>
@@ -248,6 +258,7 @@
                         <outlet property="chooseConsoleButton" destination="kZp-q9-wAG" id="pAG-UV-ecr"/>
                         <outlet property="chooseGenresButton" destination="Mou-R9-vC9" id="3vT-sv-Ah3"/>
                         <outlet property="chooseYearButton" destination="tJ5-Ft-0qm" id="Ef6-gS-buY"/>
+                        <outlet property="closeGenresButton" destination="TG2-gx-A0d" id="qqw-LW-geG"/>
                         <outlet property="consoleLabel" destination="blb-mj-Ot4" id="UCW-mr-Ban"/>
                         <outlet property="coverURL" destination="nU1-6E-AQE" id="eAQ-qR-MoC"/>
                         <outlet property="gameTitle" destination="PeP-nA-NPd" id="3v5-5a-Ubq"/>
