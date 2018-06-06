@@ -86,9 +86,7 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
     FOREIGN KEY(s_id) REFERENCES Studio(ids)
     ON DELETE CASCADE ON UPDATE CASCADE);
     """
-    
-    let consoles = ["PS4", "PS4", "Xbox 360", "Xbox 360", "PC", "PS3", "PS3"]
-    
+        
     let textCellIdentifier = "gameCell"
     
     override func viewDidLoad() {

@@ -60,15 +60,14 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         if sqlite3_prepare_v2(db, insertString, -1, &insertStatement, nil) == SQLITE_OK {
             
             sqlite3_bind_text(insertStatement, 1, (gameTitle.text! as NSString).utf8String, -1, nil)
-            print(gameTitle.text!)
-            sqlite3_bind_int(insertStatement, 2, Int32(2018))
+            sqlite3_bind_int(insertStatement, 2, Int32(newGame!.year))
             sqlite3_bind_int(insertStatement, 3, Int32(state))
             sqlite3_bind_text(insertStatement, 4, (coverURL.text! as NSString).utf8String, -1, nil)
-            print(coverURL.text!)
-            sqlite3_bind_int(insertStatement, 5, 1)
+            sqlite3_bind_int(insertStatement, 5, Int32(newGame!.c_id))
             
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 print("Successfully inserted row.")
+                newGame!.idg = Int(sqlite3_last_insert_rowid(db))
             } else {
                 print("Could not insertGame row.")
             }
@@ -83,6 +82,29 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
     func insertStudio() {
         let studioArr = studio.text?.components(separatedBy: ", ")
         
+    }
+    
+    func insertGameToGenre() {
+        var insertStatement: OpaquePointer?
+        
+        let insertGameGenre = "INSERT INTO game_to_genre (g_id, ge_id) VALUES (?,?);"
+        
+        for i in newGame!.genres {
+            print(i)
+            if sqlite3_prepare_v2(db, insertGameGenre, -1, &insertStatement, nil) == SQLITE_OK {
+                sqlite3_bind_int(insertStatement, 2, Int32(newGame!.idg))
+                sqlite3_bind_int(insertStatement, 3, Int32(i))
+                if sqlite3_step(insertStatement) == SQLITE_DONE {
+                    print("Successfully inserted row.")
+                } else {
+                    print("Could not insertGameToGenre row.")
+                }
+            } else {
+                print("INSERT statement could not be prepared.")
+            }
+        }
+        
+        sqlite3_finalize(insertStatement)
     }
     
     func queryConsolesAndGenres() {
@@ -141,6 +163,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             self.pickerView.isHidden = false
             self.closeGenresButton.isHidden = false
             
+            newGame?.genres = []
             genres = ""
             genresLabel.text = "Genres"
             
@@ -154,16 +177,19 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             chooseYearButton.isEnabled = false
         } else {
             print("Genre has been chosen. Waiting for more.")
-            let newGenre = pickerData[pickerView.selectedRow(inComponent: 0)]
+            let newGenre = availableGenres.index(of: pickerData[pickerView.selectedRow(inComponent: 0)])! + 1
+            
+            newGame?.genres.append(newGenre)
+            print(newGame!.genres)
             
             pickerData.remove(at: pickerView.selectedRow(inComponent: 0))
             pickerView.reloadAllComponents()
             
             if (genres == "") {
-                genres = genres! + String(newGenre)
+                genres = genres! + String(pickerData[pickerView.selectedRow(inComponent: 0)])
             } else {
                 genres = genres! + ", "
-                genres = genres! + String(newGenre)
+                genres = genres! + String(pickerData[pickerView.selectedRow(inComponent: 0)])
             }
             
             genresLabel.text = genres
@@ -186,7 +212,6 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         } else {
             print("Year has been chosen. Everything is back to normal.")
             newGame!.year = Int(pickerData[pickerView.selectedRow(inComponent: 0)])!
-            print(newGame!.year)
             yearLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
             chooseConsoleButton.isEnabled = true
             chooseGenresButton.isEnabled = true
@@ -224,6 +249,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         
         alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
             self.insertGame(state: 0)
+            self.insertGameToGenre()
             self.dismiss(animated: true, completion: nil)
         }))
         
