@@ -169,9 +169,9 @@ class GameViewController: UIViewController {
         
         if sqlite3_prepare_v2(db, deleteString, -1, &statement, nil) == SQLITE_OK {
             if sqlite3_exec(db, deleteString, nil, nil, nil) == SQLITE_OK {
-                print("super kurwo")
+                print("Successfully deleted game")
             } else {
-                print("chujnia")
+                print("Can't delete game")
             }
         } else {
             print("DELETE statement could not be prepared")

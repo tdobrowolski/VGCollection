@@ -29,6 +29,8 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var studioCell: UITableViewCell!
     @IBOutlet weak var genresCell: UITableViewCell!
     
+    let redColor = UIColor(red:1.00, green:0.39, blue:0.30, alpha:1.0)
+    
     var db: OpaquePointer?
     var pickerData = [String]()
     var newGame: Game?
@@ -109,7 +111,6 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         var lastId: Int64 = 0
         
         for i in studioArr! {
-            print(i)
             if sqlite3_prepare_v2(db, insertStudio, -1, &insertStatement, nil) == SQLITE_OK {
                 sqlite3_bind_text(insertStatement, 1, i, -1, nil)
                 if sqlite3_step(insertStatement) == SQLITE_DONE {
@@ -139,7 +140,6 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         let insertGameGenre = "INSERT INTO game_to_genre (g_id, ge_id) VALUES (?,?);"
         
         for i in newGame!.genres {
-            print(i)
             if sqlite3_prepare_v2(db, insertGameGenre, -1, &insertStatement, nil) == SQLITE_OK {
                 sqlite3_bind_int(insertStatement, 1, Int32(newGame!.idg))
                 sqlite3_bind_int(insertStatement, 2, Int32(i))
@@ -201,6 +201,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             print("Console has been chosen. Everything is back to normal.")
             newGame!.c_id = pickerView.selectedRow(inComponent: 0)+1
             consoleLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
+            consoleLabel.textColor = UIColor.black
             self.chooseGenresButton.isEnabled = true
             self.chooseYearButton.isEnabled = true
             self.pickerView.isHidden = true
@@ -230,8 +231,8 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             let newGenre = availableGenres.index(of: pickerData[pickerView.selectedRow(inComponent: 0)])! + 1
             
             newGame?.genres.append(newGenre)
-            print(newGame!.genres)
-            
+            genresLabel.textColor = UIColor.black
+
             pickerData.remove(at: pickerView.selectedRow(inComponent: 0))
             pickerView.reloadAllComponents()
             
@@ -255,6 +256,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             for i in 1980...2018 {
                 pickerData.append(String(i))
             }
+            pickerData.reverse()
             
             self.pickerView.delegate = self
             chooseConsoleButton.isEnabled = false
@@ -263,6 +265,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             print("Year has been chosen. Everything is back to normal.")
             newGame!.year = Int(pickerData[pickerView.selectedRow(inComponent: 0)])!
             yearLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
+            yearLabel.textColor = UIColor.black
             chooseConsoleButton.isEnabled = true
             chooseGenresButton.isEnabled = true
             self.pickerView.isHidden = true
@@ -306,32 +309,66 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         return String(pickerData[row])
     }
     
+    func checkFields() -> Bool {
+        
+        var isLegit = true
+        
+        if (gameTitle.text == "") {
+            isLegit = false
+            gameTitle.layer.borderColor = redColor.cgColor
+            gameTitle.layer.borderWidth = 1.0
+        }
+        if (studio.text == "" && passedGame?.studio == nil) {
+            isLegit = false
+            studio.layer.borderColor = redColor.cgColor
+            studio.layer.borderWidth = 1.0
+        }
+        if ((newGame?.c_id)! == 0 && passedGame?.idg == nil) {
+            isLegit = false
+            consoleLabel.textColor = redColor
+
+        }
+        if ((newGame?.genres)! == [] && passedGame?.genres == nil) {
+            isLegit = false
+            genresLabel.textColor = redColor
+        }
+        if ((newGame?.year)! == 0 && passedGame?.idg == nil) {
+            isLegit = false
+            yearLabel.textColor = redColor
+        }
+        
+        return isLegit
+    }
+    
     @IBAction func Done(_ sender: Any) {
-        let alert = UIAlertController(title: nil, message: "Add to:", preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
-            self.execGame(state: 0)
-            if (self.passedGame?.idg == nil) {
-                self.insertGameToGenre()
-                self.insertStudio()
-            }
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Wish list", style: .default , handler:{ (UIAlertAction)in
-            self.execGame(state: 1)
-            if (self.passedGame?.idg == nil) {
-                self.insertGameToGenre()
-                self.insertStudio()
-            }
-            self.dismiss(animated: true, completion: nil)
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in }))
-        
-        self.present(alert, animated: true, completion: {
-            print("completion block")
-        })
+        if(checkFields() == true) {
+            let alert = UIAlertController(title: nil, message: "Add to:", preferredStyle: .actionSheet)
+            
+            alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
+                self.execGame(state: 0)
+                if (self.passedGame?.idg == nil) {
+                    self.insertGameToGenre()
+                    self.insertStudio()
+                }
+                self.dismiss(animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Wish list", style: .default , handler:{ (UIAlertAction)in
+                self.execGame(state: 1)
+                if (self.passedGame?.idg == nil) {
+                    self.insertGameToGenre()
+                    self.insertStudio()
+                }
+                self.dismiss(animated: true, completion: nil)
+            }))
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in }))
+            
+            self.present(alert, animated: true, completion: {
+                print("completion block")
+            })
+        }
     }
     
     @IBAction func Cancel(_ sender: Any) {
