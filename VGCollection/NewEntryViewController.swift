@@ -26,10 +26,14 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var genresLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     
+    @IBOutlet weak var studioCell: UITableViewCell!
+    @IBOutlet weak var genresCell: UITableViewCell!
+    
     var db: OpaquePointer?
     var pickerData = [String]()
     var newGame: Game?
     var genres: String?
+    var passedGame: Game?
     
     var availableConsoles = [String]()
     var availableGenres = [String]()
@@ -43,6 +47,17 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
         
+        if (passedGame != nil) {
+            gameTitle.text = passedGame?.title
+            studio.text = passedGame?.studio
+            coverURL.text = passedGame?.c_url
+            consoleLabel.text = passedGame?.console
+            yearLabel.text = String((passedGame?.year)!)
+            self.title = "Update"
+            studioCell.isHidden = true
+            genresCell.isHidden = true
+        }
+        
         self.pickerView.isHidden = true
         self.closeGenresButton.isHidden = true
     }
@@ -51,13 +66,19 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         super.didReceiveMemoryWarning()
     }
     
-    func insertGame(state: Int) {
+    func execGame(state: Int) {
         var insertStatement: OpaquePointer?
         
-        let insertString = "INSERT INTO Game (title, year, state, c_url, c_id) VALUES (?,?,?,?,?);"
+        let execString: String
+        
+        if (passedGame?.idg != nil) {
+            execString = "UPDATE Game SET title=?, year=?, state=?, c_url=?, c_id=? WHERE idg = \(String(describing: (passedGame?.idg)!));"
+        } else {
+            execString = "INSERT INTO Game (title, year, state, c_url, c_id) VALUES (?,?,?,?,?);"
+        }
         
         //preparing the query
-        if sqlite3_prepare_v2(db, insertString, -1, &insertStatement, nil) == SQLITE_OK {
+        if sqlite3_prepare_v2(db, execString, -1, &insertStatement, nil) == SQLITE_OK {
             
             sqlite3_bind_text(insertStatement, 1, (gameTitle.text! as NSString).utf8String, -1, nil)
             sqlite3_bind_int(insertStatement, 2, Int32(newGame!.year))
@@ -66,22 +87,50 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             sqlite3_bind_int(insertStatement, 5, Int32(newGame!.c_id))
             
             if sqlite3_step(insertStatement) == SQLITE_DONE {
-                print("Successfully inserted row.")
+                print("Successfully inserted or updated row.")
                 newGame!.idg = Int(sqlite3_last_insert_rowid(db))
             } else {
-                print("Could not insertGame row.")
+                print("Could not insert or update row.")
             }
             
         } else {
-            print("INSERT statement could not be prepared.")
+            print("INSERT or UPDATE statement could not be prepared.")
         }
         
         sqlite3_finalize(insertStatement)
     }
     
     func insertStudio() {
+        var insertStatement: OpaquePointer?
         let studioArr = studio.text?.components(separatedBy: ", ")
+        let insertStudio = "INSERT INTO Studio (name) VALUES (?);"
+        let insertGameStudio = "INSERT INTO game_to_studio (g_id, s_id) VALUES (?,?);"
         
+        var lastId: Int64 = 0
+        
+        for i in studioArr! {
+            print(i)
+            if sqlite3_prepare_v2(db, insertStudio, -1, &insertStatement, nil) == SQLITE_OK {
+                sqlite3_bind_text(insertStatement, 1, i, -1, nil)
+                if sqlite3_step(insertStatement) == SQLITE_DONE {
+                    print("Successfully inserted row.")
+                    lastId = sqlite3_last_insert_rowid(db)
+                } else {
+                    print("Could not insertStudio row.")
+                }
+            }
+            if sqlite3_prepare_v2(db, insertGameStudio, -1, &insertStatement, nil) == SQLITE_OK {
+                sqlite3_bind_int(insertStatement, 1, Int32(newGame!.idg))
+                sqlite3_bind_int(insertStatement, 2, Int32(lastId))
+                if sqlite3_step(insertStatement) == SQLITE_DONE {
+                    print("Successfully inserted row.")
+                } else {
+                    print("Could not insertStudio row.")
+                }
+            }
+        }
+        
+        sqlite3_finalize(insertStatement)
     }
     
     func insertGameToGenre() {
@@ -92,8 +141,8 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         for i in newGame!.genres {
             print(i)
             if sqlite3_prepare_v2(db, insertGameGenre, -1, &insertStatement, nil) == SQLITE_OK {
-                sqlite3_bind_int(insertStatement, 2, Int32(newGame!.idg))
-                sqlite3_bind_int(insertStatement, 3, Int32(i))
+                sqlite3_bind_int(insertStatement, 1, Int32(newGame!.idg))
+                sqlite3_bind_int(insertStatement, 2, Int32(i))
                 if sqlite3_step(insertStatement) == SQLITE_DONE {
                     print("Successfully inserted row.")
                 } else {
@@ -146,14 +195,14 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             }
             
             self.pickerView.delegate = self
-            chooseGenresButton.isEnabled = false
-            chooseYearButton.isEnabled = false
+            self.chooseGenresButton.isEnabled = false
+            self.chooseYearButton.isEnabled = false
         } else {
             print("Console has been chosen. Everything is back to normal.")
             newGame!.c_id = pickerView.selectedRow(inComponent: 0)+1
             consoleLabel.text = String(pickerData[pickerView.selectedRow(inComponent: 0)])
-            chooseGenresButton.isEnabled = true
-            chooseYearButton.isEnabled = true
+            self.chooseGenresButton.isEnabled = true
+            self.chooseYearButton.isEnabled = true
             self.pickerView.isHidden = true
         }
     }
@@ -168,7 +217,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             genresLabel.text = "Genres"
             
             pickerData.removeAll()
-            for i in availableGenres { // zmien na dostep do gatunkow
+            for i in availableGenres {
                 pickerData.append(i)
             }
             
@@ -177,6 +226,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             chooseYearButton.isEnabled = false
         } else {
             print("Genre has been chosen. Waiting for more.")
+            let chosenGenre = pickerData[pickerView.selectedRow(inComponent: 0)]
             let newGenre = availableGenres.index(of: pickerData[pickerView.selectedRow(inComponent: 0)])! + 1
             
             newGame?.genres.append(newGenre)
@@ -186,10 +236,10 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             pickerView.reloadAllComponents()
             
             if (genres == "") {
-                genres = genres! + String(pickerData[pickerView.selectedRow(inComponent: 0)])
+                genres = genres! + String(chosenGenre)
             } else {
                 genres = genres! + ", "
-                genres = genres! + String(pickerData[pickerView.selectedRow(inComponent: 0)])
+                genres = genres! + String(chosenGenre)
             }
             
             genresLabel.text = genres
@@ -231,6 +281,18 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         self.closeGenresButton.isHidden = true
     }
     
+    // UITableView
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
+        if cell.isHidden == true {
+            return 0
+        }
+        
+        return super.tableView(tableView, heightForRowAt: indexPath)
+    }
+    
     // UIPickerView
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -248,13 +310,20 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         let alert = UIAlertController(title: nil, message: "Add to:", preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "My games", style: .default , handler:{ (UIAlertAction)in
-            self.insertGame(state: 0)
-            self.insertGameToGenre()
+            self.execGame(state: 0)
+            if (self.passedGame?.idg == nil) {
+                self.insertGameToGenre()
+                self.insertStudio()
+            }
             self.dismiss(animated: true, completion: nil)
         }))
         
         alert.addAction(UIAlertAction(title: "Wish list", style: .default , handler:{ (UIAlertAction)in
-            self.insertGame(state: 1)
+            self.execGame(state: 1)
+            if (self.passedGame?.idg == nil) {
+                self.insertGameToGenre()
+                self.insertStudio()
+            }
             self.dismiss(animated: true, completion: nil)
         }))
         

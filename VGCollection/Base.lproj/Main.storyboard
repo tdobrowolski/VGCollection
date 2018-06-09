@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iOg-3E-DvA">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iOg-3E-DvA">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -262,15 +262,17 @@
                         <outlet property="consoleLabel" destination="blb-mj-Ot4" id="UCW-mr-Ban"/>
                         <outlet property="coverURL" destination="nU1-6E-AQE" id="eAQ-qR-MoC"/>
                         <outlet property="gameTitle" destination="PeP-nA-NPd" id="3v5-5a-Ubq"/>
+                        <outlet property="genresCell" destination="J9J-uN-sr1" id="LEL-tJ-itw"/>
                         <outlet property="genresLabel" destination="hqA-gP-aRZ" id="PE4-5s-iTZ"/>
                         <outlet property="pickerView" destination="jl5-fb-ywC" id="SL1-Eg-HQU"/>
                         <outlet property="studio" destination="AJk-9z-Hl0" id="kOm-PX-GKr"/>
+                        <outlet property="studioCell" destination="vo4-ue-wcg" id="Wwc-A1-IYI"/>
                         <outlet property="yearLabel" destination="aFu-4E-Crm" id="dPI-M9-z96"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X5P-aD-72C" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2980" y="417.8410794602699"/>
+            <point key="canvasLocation" x="3708" y="430"/>
         </scene>
         <!--Games-->
         <scene sceneID="tne-QT-ifu">
@@ -389,7 +391,7 @@
                                     <action selector="deleteAction:" destination="EnH-Su-ffg" eventType="touchUpInside" id="q5H-v1-HQe"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Title" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COZ-XJ-1e9">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Title" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="COZ-XJ-1e9">
                                 <rect key="frame" x="16" y="310" width="343" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -443,6 +445,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0if-e8-Zbk"/>
                     </view>
+                    <navigationItem key="navigationItem" id="N0V-00-nJX">
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="t4o-GS-Qce">
+                            <connections>
+                                <action selector="edit:" destination="EnH-Su-ffg" id="Id4-9f-PIl"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="consoleLabel" destination="sEJ-GV-eeu" id="LGG-sb-J8P"/>
                         <outlet property="coverImage" destination="Tc5-bu-hyx" id="RGL-QP-IAr"/>
@@ -450,11 +459,12 @@
                         <outlet property="genresLabel" destination="TKI-Ju-TkP" id="NHC-j4-1cX"/>
                         <outlet property="studioLabel" destination="DYN-GB-VZY" id="MZo-HX-oae"/>
                         <outlet property="titleTextView" destination="COZ-XJ-1e9" id="8ZR-S6-tQb"/>
+                        <segue destination="DCN-XS-tho" kind="presentation" identifier="edit" id="JR5-fT-FjG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dRi-69-QIq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="1188"/>
+            <point key="canvasLocation" x="2038" y="1225"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ENW-VE-nN8">
@@ -490,7 +500,10 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ud5-MK-LJU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2038" y="418"/>
+            <point key="canvasLocation" x="2818" y="430"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="JR5-fT-FjG"/>
+    </inferredMetricsTieBreakers>
 </document>
