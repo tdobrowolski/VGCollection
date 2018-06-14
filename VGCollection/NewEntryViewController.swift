@@ -49,6 +49,8 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
         self.pickerView.delegate = self
         self.pickerView.dataSource = self
         
+        hideKeyboardWhenTappedAround()
+        
         if (passedGame != nil) {
             gameTitle.text = passedGame?.title
             studio.text = passedGame?.studio
@@ -323,7 +325,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             studio.layer.borderColor = redColor.cgColor
             studio.layer.borderWidth = 1.0
         }
-        if ((newGame?.c_id)! == 0 && passedGame?.idg == nil) {
+        if ((newGame?.c_id)! == 0) {
             isLegit = false
             consoleLabel.textColor = redColor
 
@@ -332,7 +334,7 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
             isLegit = false
             genresLabel.textColor = redColor
         }
-        if ((newGame?.year)! == 0 && passedGame?.idg == nil) {
+        if ((newGame?.year)! == 0) {
             isLegit = false
             yearLabel.textColor = redColor
         }
@@ -373,5 +375,16 @@ class NewEntryViewController: UITableViewController, UIPickerViewDataSource, UIP
     
     @IBAction func Cancel(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
     }
 }
